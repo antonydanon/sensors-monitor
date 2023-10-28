@@ -18,8 +18,4 @@ public class DefaultUserService implements UserService {
                 .findByLogin(username)
                 .orElseThrow(() -> new UserNotFoundException("User hasn't been found."));
     }
-
-    public User save(User user) {
-        return userRepository.save(user);
-    }
 }
