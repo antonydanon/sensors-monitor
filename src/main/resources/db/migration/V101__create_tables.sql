@@ -1,19 +1,10 @@
-create table if not exists user_role
-(
-    id      bigserial primary key,
-    name    varchar(15)
-);
-
 create table if not exists user_account
 (
-    id         bigserial primary key,
-    login      varchar(20),
-    password   varchar(255),
-    role_id    bigserial,
-
-    foreign key (role_id) references user_role (id)
-    on delete restrict
-    on update cascade
+    id           bigserial primary key,
+    login        varchar(20),
+    password     varchar(255),
+    role         varchar(15),
+    is_enabled   boolean
 );
 
 create table if not exists sensor_unit
