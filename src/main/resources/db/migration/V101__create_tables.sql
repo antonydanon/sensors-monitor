@@ -3,6 +3,7 @@ create table if not exists user_account
     id           bigserial primary key,
     login        varchar(20),
     password     varchar(255),
+    token        varchar(300),
     role         varchar(15),
     is_enabled   boolean
 );
