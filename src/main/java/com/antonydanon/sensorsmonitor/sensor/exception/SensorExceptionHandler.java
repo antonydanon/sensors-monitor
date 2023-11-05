@@ -10,7 +10,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class SensorExceptionHandler {
 
     @ExceptionHandler(SensorNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleSensorNotFoundException(SensorNotFoundException e) {
+    public ResponseEntity<ExceptionResponse> handleSensorNotFound(SensorNotFoundException e) {
         return ResponseEntity.status(NOT_FOUND).body(new ExceptionResponse(e.getMessage()));
     }
 }

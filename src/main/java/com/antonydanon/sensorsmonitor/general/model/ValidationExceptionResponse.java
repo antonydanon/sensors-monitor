@@ -6,7 +6,7 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
-public class ValidationErrorResponse {
+public class ValidationExceptionResponse {
 
     private final List<Violation> violations;
 }

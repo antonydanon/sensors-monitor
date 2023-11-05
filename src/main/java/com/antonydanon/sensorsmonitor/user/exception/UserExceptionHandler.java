@@ -11,7 +11,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class UserExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleUserNotFoundException(UserNotFoundException e) {
+    public ResponseEntity<ExceptionResponse> handleUserNotFound(UserNotFoundException e) {
         return ResponseEntity.status(NOT_FOUND).body(new ExceptionResponse(e.getMessage()));
     }
 }
