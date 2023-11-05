@@ -8,5 +8,5 @@ public interface SensorTypeService {
 
     List<SensorType> getAll();
 
-    SensorType findByName(String name);
+    SensorType getByName(String name);
 }

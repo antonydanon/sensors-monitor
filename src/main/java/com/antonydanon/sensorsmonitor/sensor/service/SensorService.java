@@ -8,12 +8,12 @@ import org.springframework.data.domain.Page;
 
 public interface SensorService {
 
-    Sensor get(Long id);
+    Sensor getSensor(Long id);
     Page<Sensor> getAllBySearchAndPage(String searchTerm, int pageNumber);
 
-    Sensor create(SensorCreateDto dto);
+    Sensor createSensor(SensorCreateDto dto);
 
-    Sensor update(SensorUpdateDto dto);
+    Sensor updateSensor(SensorUpdateDto dto);
 
-    void delete(Long id);
+    void deleteSensor(Long id);
 }

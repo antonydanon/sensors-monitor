@@ -28,7 +28,7 @@ public class DefaultSensorService implements SensorService {
     private final SensorRepository sensorRepository;
 
     @Override
-    public Sensor get(Long id) {
+    public Sensor getSensor(Long id) {
         return sensorRepository.findById(id)
                 .orElseThrow(() -> new SensorNotFoundException("Sensor not found."));
     }
@@ -54,28 +54,20 @@ public class DefaultSensorService implements SensorService {
 
     @Override
     @Transactional
-    public Sensor create(SensorCreateDto dto) {
+    public Sensor createSensor(SensorCreateDto dto) {
         Sensor sensor = toSensor(dto);
         return sensorRepository.save(sensor);
     }
 
     @Override
     @Transactional
-    public Sensor update(SensorUpdateDto dto) {
-        Sensor sensor = get(dto.getId());
-        sensor.setName(dto.getName());
-        sensor.setModel(dto.getModel());
-        sensor.setSensorUnit(sensorUnitService.findByName(dto.getSensorUnit()));
-        sensor.setSensorType(sensorTypeService.findByName(dto.getSensorType()));
-        sensor.setRangeFrom(dto.getRangeFrom());
-        sensor.setRangeTo(dto.getRangeTo());
-        sensor.setDescription(dto.getDescription());
-        sensor.setLocation(dto.getLocation());
-        return sensorRepository.save(sensor);
+    public Sensor updateSensor(SensorUpdateDto dto) {
+        Sensor sensor = getSensor(dto.getId());
+        return sensorRepository.save(updatedSensor(sensor, dto));
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteSensor(Long id) {
         sensorRepository.deleteById(id);
     }
 
@@ -84,9 +76,21 @@ public class DefaultSensorService implements SensorService {
                 .setModel(dto.getModel())
                 .setRangeFrom(dto.getRangeFrom())
                 .setRangeTo(dto.getRangeTo())
-                .setSensorType(sensorTypeService.findByName(dto.getSensorType()))
+                .setSensorType(sensorTypeService.getByName(dto.getSensorType()))
                 .setSensorUnit(sensorUnitService.findByName(dto.getSensorUnit()))
                 .setDescription(dto.getDescription())
                 .setLocation(dto.getLocation());
+    }
+
+    private Sensor updatedSensor(Sensor sensor, SensorUpdateDto dto) {
+        sensor.setName(dto.getName());
+        sensor.setModel(dto.getModel());
+        sensor.setSensorUnit(sensorUnitService.findByName(dto.getSensorUnit()));
+        sensor.setSensorType(sensorTypeService.getByName(dto.getSensorType()));
+        sensor.setRangeFrom(dto.getRangeFrom());
+        sensor.setRangeTo(dto.getRangeTo());
+        sensor.setDescription(dto.getDescription());
+        sensor.setLocation(dto.getLocation());
+        return sensor;
     }
 }

@@ -21,7 +21,7 @@ public class DefaultSensorType implements SensorTypeService {
     }
 
     @Override
-    public SensorType findByName(String name) {
+    public SensorType getByName(String name) {
         return sensorTypeRepository.findByName(name)
                 .orElseThrow(() -> new SensorTypeNotFoundException("Sensor type not found."));
     }
