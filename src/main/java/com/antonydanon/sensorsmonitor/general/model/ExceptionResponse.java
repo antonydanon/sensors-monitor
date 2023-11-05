@@ -1,4 +1,4 @@
-package com.antonydanon.sensorsmonitor.general.exception;
+package com.antonydanon.sensorsmonitor.general.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

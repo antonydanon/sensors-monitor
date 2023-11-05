@@ -7,12 +7,16 @@ import com.antonydanon.sensorsmonitor.sensor.service.SensorService;
 import com.antonydanon.sensorsmonitor.user.model.Role;
 import com.antonydanon.sensorsmonitor.user.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
+import static com.antonydanon.sensorsmonitor.utils.ValidationUtils.validateThatOneValueIsLessThanOther;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +26,8 @@ public class SensorController {
     private final SensorService sensorService;
 
     @GetMapping
-    public ResponseEntity<List<Sensor>> getAll() {
-        return ResponseEntity.ok(sensorService.getAll());
+    public ResponseEntity<Page<Sensor>> getAllByPage(@RequestParam String searchTerm, @RequestParam int pageNumber) {
+        return ResponseEntity.ok(sensorService.getAllBySearchAndPage(searchTerm, pageNumber));
     }
 
     @GetMapping("/{id}")
@@ -41,14 +45,16 @@ public class SensorController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public ResponseEntity<String> create(@RequestBody SensorCreateDto dto) {
+    public ResponseEntity<String> create(@Valid @RequestBody SensorCreateDto dto) {
+        validateThatOneValueIsLessThanOther(dto.getRangeFrom(), dto.getRangeTo(),
+                "Range from value must be less than Range to value.");
         sensorService.create(dto);
         return ResponseEntity.ok("Sensor has been created.");
     }
 
     @PatchMapping
     @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public ResponseEntity<String> updatePost(@RequestBody SensorUpdateDto dto) {
+    public ResponseEntity<String> update(@Valid @RequestBody SensorUpdateDto dto) {
         sensorService.update(dto);
         return ResponseEntity.ok("Sensor has been updated.");
     }

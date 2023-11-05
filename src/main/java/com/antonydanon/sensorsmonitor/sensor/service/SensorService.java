@@ -3,13 +3,13 @@ package com.antonydanon.sensorsmonitor.sensor.service;
 import com.antonydanon.sensorsmonitor.sensor.model.Sensor;
 import com.antonydanon.sensorsmonitor.sensor.model.SensorCreateDto;
 import com.antonydanon.sensorsmonitor.sensor.model.SensorUpdateDto;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 
 public interface SensorService {
 
     Sensor get(Long id);
-    List<Sensor> getAll();
+    Page<Sensor> getAllBySearchAndPage(String searchTerm, int pageNumber);
 
     Sensor create(SensorCreateDto dto);
 

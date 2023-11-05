@@ -8,13 +8,20 @@ import com.antonydanon.sensorsmonitor.sensor.repository.SensorRepository;
 import com.antonydanon.sensorsmonitor.sensorType.service.SensorTypeService;
 import com.antonydanon.sensorsmonitor.sensorUnit.service.SensorUnitService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
+
+import static com.antonydanon.sensorsmonitor.sensor.specification.SensorSpecification.*;
+import static org.apache.logging.log4j.util.Strings.isNotBlank;
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultSensorService implements SensorService {
+
+    private static final int NUMBER_OF_SENSORS_PER_PAGE = 4;
 
     private final SensorTypeService sensorTypeService;
     private final SensorUnitService sensorUnitService;
@@ -27,8 +34,22 @@ public class DefaultSensorService implements SensorService {
     }
 
     @Override
-    public List<Sensor> getAll() {
-        return sensorRepository.findAll();
+    public Page<Sensor> getAllBySearchAndPage(String searchTerm, int pageNumber) {
+        if (isNotBlank(searchTerm)) {
+            return sensorRepository
+                    .findAll(where(nameLike(searchTerm)
+                            .or(modelLike(searchTerm))
+                            .or(rangeFromLike(searchTerm))
+                            .or(rangeToLike(searchTerm))
+                            .or(sensorTypeLike(searchTerm))
+                            .or(sensorUnitLike(searchTerm))
+                            .or(locationLike(searchTerm))
+                            .or(descriptionLike(searchTerm))),
+                            PageRequest.of(pageNumber, NUMBER_OF_SENSORS_PER_PAGE));
+        } else {
+            return sensorRepository
+                    .findAll(PageRequest.of(pageNumber, NUMBER_OF_SENSORS_PER_PAGE));
+        }
     }
 
     @Override

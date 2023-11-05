@@ -1,6 +1,6 @@
 package com.antonydanon.sensorsmonitor.sensorType.exception;
 
-import com.antonydanon.sensorsmonitor.general.exception.ExceptionResponse;
+import com.antonydanon.sensorsmonitor.general.model.ExceptionResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
